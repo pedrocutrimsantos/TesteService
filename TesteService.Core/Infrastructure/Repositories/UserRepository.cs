@@ -31,5 +31,14 @@ namespace TesteService.Core.Infrastructure.Repositories
             return _context.Set<TUser>().Where(x => x.Email == email).FirstOrDefaultAsync();
         }
 
+        public Task<TUser> FindByEmail(TypeUser typeUser)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<TUser> FindByCpf(TypeUser typeUser)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

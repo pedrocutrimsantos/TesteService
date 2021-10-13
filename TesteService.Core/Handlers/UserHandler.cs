@@ -41,11 +41,6 @@ namespace TesteService.Core.Handlers
             {
                 return new CommandResponse(false, "CPF JÁ EXISTE");
             }
-            TUser typeuser = await _userRepository.FindByEmail(request.TypeUser);
-            if (typeuser != null)
-            {
-                return new CommandResponse(false, "EMAIL JÁ EXISTE");
-            }
             TUser email = await _userRepository.FindByEmail(request.Email);
             if (email != null)
             {
@@ -64,7 +59,7 @@ namespace TesteService.Core.Handlers
                         UserID = entity.ID
                     };
                     await _accountRepository.AddAsync(entity.Account);
-                    return new CommandResponse(result.IsValid, "CADASTRO REALIZADO COM SUCESSO");
+                    return new CommandResponse(result.IsValid, "OPERAÇÃO REALIZADA COM SUCESSO");
                 }
                 else
                 {
@@ -108,10 +103,6 @@ namespace TesteService.Core.Handlers
                 return new CommandResponse(false, "CPF/CNPJ DO RECEBIDOR NÃO ENCONTRADO");
             }
             if(send.TypeUser == TypeUser.LOJISTA)
-            {
-                return new CommandResponse(false, "LOJISTAS NÃO PODEM REALIZAR TRANSFERÊNCIA");
-            }
-            if (send.TypeUser < TypeUser.LOJISTA)
             {
                 return new CommandResponse(false, "LOJISTAS NÃO PODEM REALIZAR TRANSFERÊNCIA");
             }

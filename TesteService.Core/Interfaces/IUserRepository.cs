@@ -10,5 +10,7 @@ namespace TesteService.Core.Interfaces
     {
         Task<TUser> FindByCpf(int cpf);
         Task<TUser> FindByEmail(string email);
+        Task<TUser> FindByEmail(TypeUser typeUser);
+        Task<TUser> FindByCpf(TypeUser typeUser);
     }
 }
