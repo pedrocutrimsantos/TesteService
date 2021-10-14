@@ -11,7 +11,7 @@ namespace TesteService.Core.Infrastructure
     {
         public TesteDb CreateDbContext(string[] args)
         {
-            string ConnectionString = "Server=(localdb)\\mssqllocaldb;Database=bancoprado;Trusted_Connection=True;MultipleActiveResultSets=true";
+            string ConnectionString = "Server=(localdb)\\mssqllocaldb;Database=bancoprado2;Trusted_Connection=True;MultipleActiveResultSets=true";
             //string ConnectionString = "Data Source=DESKTOP-SJ4OGNO;Initial Catalog=Teste;Integrated Security=True;";
             DbContextOptionsBuilder<TesteDb> optionsBuilder = new DbContextOptionsBuilder<TesteDb>();
             optionsBuilder.UseSqlServer(ConnectionString);

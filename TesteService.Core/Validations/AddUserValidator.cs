@@ -18,8 +18,6 @@ namespace TesteService.Core.Validations
                 .GreaterThan(0).WithMessage("O CAMPO CPF/CPNJ É OBRIGATÓRIO!");
             RuleFor(x => x.Email)
                 .NotEmpty().WithMessage("O CAMPO EMAIL É OBRIGATÓRIO!");
-            RuleFor(x => x.TypePerson)
-                .NotNull().WithMessage("O CAMPO TIPO PESSOA É OBRIGATÓRIO!");
             RuleFor(x => x.TypeUser).NotNull().WithMessage("O CAMPO TIPO USUÁRIO É OBRIGATÓRIO!");
             RuleFor(x => x.Password)
                 .NotEmpty().WithMessage("O CAMPO SENHA É OBRIGATÓRIO!");

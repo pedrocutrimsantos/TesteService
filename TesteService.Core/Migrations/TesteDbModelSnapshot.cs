@@ -111,10 +111,7 @@ namespace TesteService.Core.Migrations
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("TypePerson")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("TypeUser")
+                   b.Property<int>("TypeUser")
                         .HasColumnType("int");
 
                     b.HasKey("ID");

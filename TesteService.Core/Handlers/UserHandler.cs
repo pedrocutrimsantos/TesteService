@@ -3,6 +3,9 @@ using FluentValidation.Results;
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Mail;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -46,11 +49,14 @@ namespace TesteService.Core.Handlers
             {
                 return new CommandResponse(false, "EMAIL JÁ EXISTE");
             }
+
             try
             {
                 ValidationResult result = BaseValidator.Validate(new AddUserValidator(), request);
                 if (result.IsValid)
                 {
+                    string passhash = CreateHash(request.Password);
+                    request.Password = passhash;
                     TUser entity = _mapper.Map<TUser>(request);
                     await _userRepository.AddAsync(entity);
                     entity.Account = new TAccount()
@@ -72,6 +78,20 @@ namespace TesteService.Core.Handlers
             }
         }
 
+        public string CreateHash(string password)
+        {
+            var md5 = MD5.Create();
+            byte[] bytes = System.Text.Encoding.ASCII.GetBytes(password);
+            byte[] hash = md5.ComputeHash(bytes);
+
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < hash.Length; i++)
+            {
+                sb.Append(hash[i].ToString("X2"));
+            }
+            return sb.ToString();
+        }
         public async Task<List<UsersResponse>> Handle(GetAllUser request, CancellationToken cancellationToken)
         {
             var list = await _userRepository.GetAllAsync();
@@ -102,7 +122,13 @@ namespace TesteService.Core.Handlers
             {
                 return new CommandResponse(false, "CPF/CNPJ DO RECEBIDOR NÃO ENCONTRADO");
             }
-            if(send.TypeUser == TypeUser.LOJISTA)
+            TUser receiver2 = await _userRepository.FindByCpf(request.CpfCnpjReceive);
+            TUser receiver1 = await _userRepository.FindByCpf(request.CpfCnpjSend);
+            if (receiver2 == receiver1)
+            {
+                return new CommandResponse(false, "CPF/CNPJ DEPOSITANTE É O MESMO DO DESTINATARIO");
+            }
+            if (send.TypeUser == TypeUser.LOJISTA)
             {
                 return new CommandResponse(false, "LOJISTAS NÃO PODEM REALIZAR TRANSFERÊNCIA");
             }
@@ -140,16 +166,52 @@ namespace TesteService.Core.Handlers
                     OperationStatus = OperationStatus.OK
 
                 };
+                string emailDestinatario = receiver2.Email;
+                SendMail(emailDestinatario);
                 await _transferRepository.AddAsync(transfer);
-               // await SendMail(receiver.Email);
                 return new CommandResponse(true, "TRANSFERÊNCIA REALIZADA COM SUCESSO!");
             }
         }
-
-       /* private SendMail(string email)
+        public bool SendMail(string email)
         {
-         //Iplementar aqui o envio de email   
-            
-        }*/
-    }
+            try
+            {
+                // Estancia da Classe de Mensagem
+                MailMessage _mailMessage = new MailMessage();
+                // Remetente
+                _mailMessage.From = new MailAddress("testeservice2022@gmail.com");
+
+                // Destinatario seta no metodo abaixo
+
+                //Contrói o MailMessage
+                _mailMessage.CC.Add(email);
+                _mailMessage.Subject = "Teste APIBancoPrado";
+                _mailMessage.IsBodyHtml = true;
+                _mailMessage.Body = "<b>Olá Tudo bem ??</b><p>Sua transferencia foi realizada</p>";
+
+                //CONFIGURAÇÃO COM PORTA
+                SmtpClient _smtpClient = new SmtpClient("smtp.gmail.com", Convert.ToInt32("587"));
+
+                //CONFIGURAÇÃO SEM PORTA
+               
+
+                // Credencial para envio por SMTP Seguro (Quando o servidor exige autenticação)
+                _smtpClient.UseDefaultCredentials = false;
+                _smtpClient.Credentials = new NetworkCredential("testeservice2022@gmail.com", "teste1993");
+
+                _smtpClient.EnableSsl = true;
+
+                _smtpClient.Send(_mailMessage);
+
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+        }
 }
+    }

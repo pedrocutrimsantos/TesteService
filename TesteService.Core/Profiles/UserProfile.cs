@@ -14,6 +14,6 @@ namespace TesteService.Core.Profiles
         {
             CreateMap<AddUser, TUser>().ReverseMap();
             CreateMap<UsersResponse, TUser>().ReverseMap();
-        }
+                    }
     }
 }

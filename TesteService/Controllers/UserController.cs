@@ -27,7 +27,7 @@ namespace TesteService.Controllers
         {
             return await _mediator.Send(new GetAllUser());
         }
-
+        
         // POST api/<UserController>
         [HttpPost]
         [Route(nameof(Add))]

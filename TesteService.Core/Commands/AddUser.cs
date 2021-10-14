@@ -13,12 +13,12 @@ namespace TesteService.Core.Commands
 
         public int CPF_CNPJ { get; set; }
 
-        public bool TypePerson { get; set; }
-
         public TypeUser TypeUser { get; set; }
 
         public string Email { get; set; }
 
         public string Password { get; set; }
     }
+
+
 }

@@ -14,9 +14,6 @@ namespace TesteService.Core.Entities
         [Required(ErrorMessage = "O CAMPO {0} É OBRIGATÓRIO!", AllowEmptyStrings = false)]
         public int CPF_CNPJ { get; set; }
 
-        [Required(ErrorMessage = "O CAMPO {0} É OBRIGATÓRIO!", AllowEmptyStrings = false)]
-        public bool TypePerson { get; set; }
-
         public TypeUser TypeUser { get; set; }
         [Required(ErrorMessage = "O CAMPO {0} É OBRIGATÓRIO!", AllowEmptyStrings = false)]
         public string Email { get; set; }

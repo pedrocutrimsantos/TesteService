@@ -16,7 +16,6 @@ namespace TesteService.Core.Migrations
                     ChangeDate = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     CPF_CNPJ = table.Column<int>(nullable: false),
-                    TypePerson = table.Column<bool>(nullable: false),
                     TypeUser = table.Column<int>(nullable: false),
                     Email = table.Column<string>(nullable: false),
                     Password = table.Column<string>(nullable: false)
