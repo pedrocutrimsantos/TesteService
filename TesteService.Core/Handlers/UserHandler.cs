@@ -92,6 +92,7 @@ namespace TesteService.Core.Handlers
             }
             return sb.ToString();
         }
+
         public async Task<List<UsersResponse>> Handle(GetAllUser request, CancellationToken cancellationToken)
         {
             var list = await _userRepository.GetAllAsync();
